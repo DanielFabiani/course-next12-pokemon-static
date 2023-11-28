@@ -1,26 +1,24 @@
+import { NextPage, GetStaticProps } from "next";
+
 import { pokeApi } from "@/api";
 import { Layout } from "@/components/layouts";
 import { PokemonListResponse } from "@/interfaces";
-import { NextPage, GetStaticProps } from "next";
 import { SmallPokemon } from "../interfaces/pokemon-list";
+import { PokemonCard } from "@/components/pokemon";
 
 interface Props {
   pokemons: SmallPokemon[];
 }
 
 const HomePage: NextPage<Props> = ({ pokemons }) => {
-  console.log(pokemons);
+  //console.log(pokemons);
 
   return (
     <Layout title="Listado de Pokemons">
-      <div>
-        <ul>
-          {pokemons.map((pokemon) => (
-            <li key={pokemon.name}>
-              #{pokemon.id} - {pokemon.name}
-            </li>
-          ))}
-        </ul>
+      <div className="m-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        {pokemons.map((pokemon) => (
+          <PokemonCard pokemon={pokemon} key={pokemon.name} />
+        ))}
       </div>
     </Layout>
   );
