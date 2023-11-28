@@ -21,6 +21,7 @@ export const PokemonCard: FC<Props> = ({ pokemon }) => {
       key={pokemon.name}
       shadow="sm"
       isPressable
+      isHoverable
       onPress={() => console.log("item pressed")}
       onClick={onClick}
     >
