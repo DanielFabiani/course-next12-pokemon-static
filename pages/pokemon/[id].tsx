@@ -1,11 +1,14 @@
+import { useState } from "react";
+
 import { GetStaticProps, NextPage, GetStaticPaths } from "next";
+
+import { Button, Card, CardBody, Image } from "@nextui-org/react";
 
 import { Layout } from "@/components/layouts";
 import { pokeApi } from "@/api";
 import { Pokemon } from "@/interfaces";
-import { Button, Card, CardBody, Image } from "@nextui-org/react";
 import { HeartIcon } from "@/components/icons";
-import { useState } from "react";
+import { localFavorites } from "@/utils";
 
 interface Props {
   pokemon: Pokemon;
@@ -14,10 +17,12 @@ interface Props {
 const PokemonPage: NextPage<Props> = ({ pokemon }) => {
   const [liked, setLiked] = useState(false);
 
-  const pokemonName = pokemon.name;
+  const onToggleFavorite = () => {
+    localFavorites.toggleFavorites(pokemon.id);
+  };
 
   return (
-    <Layout title={`Pokemon | ${pokemonName}`}>
+    <Layout title={`Pokemon | ${pokemon.name}`}>
       <Card
         isBlurred
         className="m-auto mt-10 max-w-[700px] border-none bg-background/60 dark:bg-default-100/80"
@@ -46,6 +51,7 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
                   radius="full"
                   variant="light"
                   onPress={() => setLiked((v) => !v)}
+                  onClick={onToggleFavorite}
                 >
                   <HeartIcon
                     width={24}
