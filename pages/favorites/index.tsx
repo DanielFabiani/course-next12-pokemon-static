@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Layout } from "@/components/layouts";
 import NoFavorites from "@/components/ui/NoFavorites";
 import { localFavorites } from "@/utils";
+import FavoritePokemons from "@/components/pokemon/FavoritePokemons";
 
 const FavoritesPage = () => {
   const [favoritesPokemons, setFavoritesPokemons] = useState<number[]>([]);
@@ -13,7 +14,11 @@ const FavoritesPage = () => {
 
   return (
     <Layout title="Pokemons | Favorites">
-      <NoFavorites />
+      {favoritesPokemons.length === 0 ? (
+        <NoFavorites />
+      ) : (
+        <FavoritePokemons pokemons={favoritesPokemons} />
+      )}
     </Layout>
   );
 };
