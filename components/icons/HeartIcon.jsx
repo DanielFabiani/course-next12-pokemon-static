@@ -1,5 +1,5 @@
 export const HeartIcon = ({
-  size = 24,
+  size = 28,
   width,
   height,
   strokeWidth = 1.5,

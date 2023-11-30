@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { GetStaticProps, NextPage, GetStaticPaths } from "next";
 
@@ -15,10 +15,20 @@ interface Props {
 }
 
 const PokemonPage: NextPage<Props> = ({ pokemon }) => {
-  const [liked, setLiked] = useState(false);
+  const [isInFavorites, setIsInFavorites] = useState(
+    localFavorites.existInFavorites(pokemon.id),
+  );
+
+  //const [isFavorite, setIsFavorite] = useState(false);
+
+  /* useEffect(() => {
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+    setIsFavorite(favorites.includes(pokemon.id));
+  }, [pokemon.id]) */
 
   const onToggleFavorite = () => {
     localFavorites.toggleFavorites(pokemon.id);
+    //setIsInFavorites(!isInFavorites);
   };
 
   return (
@@ -47,17 +57,19 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
                 </h1>
                 <Button
                   isIconOnly
-                  className="text-default-900/60 data-[hover]:bg-foreground/10"
+                  className="text-primary-500 data-[hover]:bg-foreground/10"
                   radius="full"
                   variant="light"
-                  onPress={() => setLiked((v) => !v)}
+                  onPress={() => setIsInFavorites((v) => !v)}
                   onClick={onToggleFavorite}
                 >
                   <HeartIcon
                     width={24}
                     height={24}
-                    className={liked ? "[&>path]:stroke-transparent" : ""}
-                    fill={liked ? "currentColor" : "none"}
+                    className={
+                      isInFavorites ? "[&>path]:stroke-transparent" : ""
+                    }
+                    fill={isInFavorites ? "currentColor" : "none"}
                   />
                 </Button>
               </div>
