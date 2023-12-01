@@ -6,7 +6,8 @@ import { Button, Card, CardBody, Image } from "@nextui-org/react";
 import confetti from "canvas-confetti";
 
 import { Layout } from "@/components/layouts";
-import { Pokemon } from "@/interfaces";
+import { pokeApi } from "@/api";
+import { Pokemon, PokemonListResponse } from "@/interfaces";
 import { HeartIcon } from "@/components/icons";
 import { getPokemonInfo, localFavorites } from "@/utils";
 
@@ -14,21 +15,13 @@ interface Props {
   pokemon: Pokemon;
 }
 
-const PokemonPage: NextPage<Props> = ({ pokemon }) => {
+const PokemonByNamePage: NextPage<Props> = ({ pokemon }) => {
   const [isInFavorites, setIsInFavorites] = useState(
     localFavorites.existInFavorites(pokemon.id),
   );
 
-  //const [isFavorite, setIsFavorite] = useState(false);
-
-  /* useEffect(() => {
-    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-    setIsFavorite(favorites.includes(pokemon.id));
-  }, [pokemon.id]) */
-
   const onToggleFavorite = () => {
     localFavorites.toggleFavorites(pokemon.id);
-    //setIsInFavorites(!isInFavorites);
 
     if (!isInFavorites) return;
     confetti({
@@ -47,7 +40,7 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
     <Layout title={`Pokemon | ${pokemon.name}`}>
       <Card
         isBlurred
-        className="m-auto mt-10 max-w-[700px] border-none bg-background/70 dark:bg-default-100/70"
+        className="m-auto mt-10 max-w-[700px] border-none bg-background/60 dark:bg-default-100/80"
         shadow="sm"
       >
         <CardBody>
@@ -148,15 +141,14 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
   );
 };
 
-// You should use getStaticPaths if you’re statically pre-rendering pages that use dynamic routes
-//se ejecuta del lado del servidor  y solo se ejecuta en build time,
-
 export const getStaticPaths: GetStaticPaths = async (ctx) => {
-  const pokemons151 = [...Array(151)].map((value, index) => `${index + 1}`);
+  const { data } = await pokeApi.get<PokemonListResponse>("/pokemon?limit=151");
+
+  const pokemonNames: string[] = data.results.map((pokemon) => pokemon.name);
 
   return {
-    paths: pokemons151.map((id) => ({
-      params: { id },
+    paths: pokemonNames.map((name) => ({
+      params: { name },
     })),
     // evita que se rendericen paginas que no existen, y lleva al 404
     fallback: false,
@@ -164,13 +156,13 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { id } = params as { id: string };
+  const { name } = params as { name: string };
 
   return {
     props: {
-      pokemon: await getPokemonInfo(id),
+      pokemon: await getPokemonInfo(name),
     },
   };
 };
 
-export default PokemonPage;
+export default PokemonByNamePage;

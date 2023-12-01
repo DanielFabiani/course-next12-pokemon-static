@@ -1,12 +1,16 @@
 import { FC, ReactNode } from "react";
 
 import Head from "next/head";
+
 import { NavBar } from "../ui";
 
 interface Props {
   title?: string;
   children?: ReactNode;
 }
+
+//se usa para traer el origen del URL, sea localhost o un uno ya en la nube
+const origin = typeof window === "undefined" ? "" : window.location.origin;
 
 export const Layout: FC<Props> = ({ children, title }) => {
   return (
@@ -20,11 +24,18 @@ export const Layout: FC<Props> = ({ children, title }) => {
           content={`Información sobre el pokemon ${title}`}
         />
         <meta name="keywords" content={`${title}, pokemon, pokedex`} />
+
+        <meta property="og:title" content={`información sobre ${title}`} />
+        <meta
+          property="og:description"
+          content={`Esta es la pagina sobre ${title}`}
+        />
+        <meta property="og:image" content={`${origin}/img/banner.png`} />
       </Head>
 
       <NavBar />
 
-      <main className="px-9 py-0 max-lg:max-w-5xl">{children}</main>
+      <main className="mx-auto max-w-7xl px-9 py-0">{children}</main>
     </>
   );
 };

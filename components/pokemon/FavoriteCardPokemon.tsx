@@ -21,11 +21,10 @@ const FavoriteCardPokemon: FC<Props> = ({ pokemonId }) => {
       isHoverable
       key={pokemonId}
       isPressable
-      onPress={() => ""}
+      className="bg-background/60 dark:bg-default-100/80"
     >
       <CardBody className="overflow-visible p-1" onClick={onFavoriteClicked}>
         <Image
-          shadow="sm"
           radius="lg"
           width="100%"
           alt={"Pokemon"}

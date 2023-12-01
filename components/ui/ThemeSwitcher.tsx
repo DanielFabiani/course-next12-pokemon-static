@@ -1,4 +1,4 @@
-import { Button, Switch } from "@nextui-org/react";
+import { Switch } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 
 import { useTheme } from "next-themes";

@@ -11,8 +11,6 @@ interface Props {
 }
 
 const HomePage: NextPage<Props> = ({ pokemons }) => {
-  //console.log(pokemons);
-
   return (
     <Layout title="Listado de Pokemons">
       <div className="m-8 grid grid-cols-2 gap-4 sm:grid-cols-4">

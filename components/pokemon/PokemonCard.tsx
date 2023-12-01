@@ -14,16 +14,16 @@ export const PokemonCard: FC<Props> = ({ pokemon }) => {
   const router = useRouter();
 
   const onClick = () => {
-    router.push(`/pokemon/${pokemon.id}`);
+    router.push(`/name/${pokemon.name}`);
   };
 
   return (
     <Card
+      className="border-none bg-background/70 dark:bg-default-100/70"
       key={pokemon.name}
-      shadow="sm"
+      shadow="md"
       isPressable
       isHoverable
-      onPress={() => console.log("item pressed")}
       onClick={onClick}
     >
       <CardBody className="overflow-visible p-0">
