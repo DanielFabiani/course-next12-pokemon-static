@@ -159,17 +159,34 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
       params: { id },
     })),
     // evita que se rendericen paginas que no existen, y lleva al 404
-    fallback: false,
+    //fallback: false,
+
+    //permite que pueda seguir avanzando mas allá de los pokemon creados
+    fallback: "blocking",
   };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { id } = params as { id: string };
 
+  //para que cree paginas luego del build time, ya en producción hay que validar si lo que se va a crear existe
+  const pokemon = await getPokemonInfo(id);
+
+  if (!pokemon) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {
-      pokemon: await getPokemonInfo(id),
+      pokemon,
     },
+    /* tiempo para hacer la re validación en segundos, se vuelve a validar la pagina cada 24hs */
+    revalidate: 86400,
   };
 };
 
